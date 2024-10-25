@@ -14,8 +14,8 @@ def is_prime(n: int) -> bool:
     """
     if n < 2:
         return False
-    for i in range (2, int(n**0.5) + 1):
-        if n%i == 0:
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
             return False
     return True
     pass
@@ -37,7 +37,6 @@ def gcd(a: int, b: int) -> int:
     return b
     pass
 
-
 def multiplicative_inverse(e: int, phi: int) -> int:
     """
     Euclid's extended algorithm for finding the multiplicative
@@ -50,24 +49,24 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     x2 = 1
     y1 = 1
     tempphi = phi
-    
+
     while e > 0:
         t1 = tempphi // e
         t2 = tempphi - t1 * e
         tempphi = e
         e = t2
-        
+
         x = x2 - t1 * x1
         y = d - t1 * y1
-        
+
         x2 = x1
         x1 = x
         d = y1
         y1 = y
-    
+
     if tempphi == 1:
-        return d%phi
-    pass
+        return d + phi
+    return 0
 
 
 def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[int, int]]:
@@ -75,7 +74,7 @@ def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[in
         raise ValueError("Both numbers must be prime.")
     elif p == q:
         raise ValueError("p and q cannot be equal")
-    n = p*q
+    n = p * q
     phi = (p - 1) * (q - 1)
 
     # Choose an integer e such that e and phi(n) are coprime
@@ -109,7 +108,7 @@ def decrypt(pk: tp.Tuple[int, int], ciphertext: tp.List[int]) -> str:
     # Unpack the key into its components
     key, n = pk
     # Generate the plaintext based on the ciphertext and key using a^b mod m
-    plain = [chr((char ** key)) % n for char in ciphertext]
+    plain = [chr((char**key)) % n for char in ciphertext]
     # Return the array of bytes as a string
     return "".join(plain)
 
