@@ -45,7 +45,28 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     >>> multiplicative_inverse(7, 40)
     23
     """
-    # PUT YOUR CODE HERE
+    d = 0
+    x1 = 0
+    x2 = 1
+    y1 = 1
+    tempphi = phi
+    
+    while e > 0:
+        t1 = tempphi // e
+        t2 = tempphi - t1 * e
+        tempphi = e
+        e = t2
+        
+        x = x2 - t1 * x1
+        y = d - t1 * y1
+        
+        x2 = x1
+        x1 = x
+        d = y1
+        y1 = y
+    
+    if tempphi == 1:
+        return d%phi
     pass
 
 
@@ -88,7 +109,7 @@ def decrypt(pk: tp.Tuple[int, int], ciphertext: tp.List[int]) -> str:
     # Unpack the key into its components
     key, n = pk
     # Generate the plaintext based on the ciphertext and key using a^b mod m
-    plain = [chr((char ** key) % n) for char in ciphertext]
+    plain = [chr((char ** key)) % n for char in ciphertext]
     # Return the array of bytes as a string
     return "".join(plain)
 
