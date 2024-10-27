@@ -18,7 +18,6 @@ def is_prime(n: int) -> bool:
         if n % i == 0:
             return False
     return True
-    pass
 
 
 def gcd(a: int, b: int) -> int:
@@ -29,13 +28,16 @@ def gcd(a: int, b: int) -> int:
     >>> gcd(3, 7)
     1
     """
-    while a != b:
-        if a > b:
-            a = a - b
-        else:
-            b = b - a
-    return b
-    pass
+    if a == 0 or b == 0:
+        return max(a, b)
+    else:
+        while a != b:
+            if a > b:
+                a -= b
+            else:
+                b -= a
+        return a
+
 
 def multiplicative_inverse(e: int, phi: int) -> int:
     """
@@ -44,35 +46,20 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     >>> multiplicative_inverse(7, 40)
     23
     """
-    d = 0
-    x1 = 0
-    x2 = 1
-    y1 = 1
-    tempphi = phi
-
-    while e > 0:
-        t1 = tempphi // e
-        t2 = tempphi - t1 * e
-        tempphi = e
-        e = t2
-
-        x = x2 - t1 * x1
-        y = d - t1 * y1
-
-        x2 = x1
-        x1 = x
-        d = y1
-        y1 = y
-
-    if tempphi == 1:
-        return d + phi
-    return 0
+    phi0 = phi
+    x0 = 0
+    x1 = 1
+    while e > 1:
+        t = e // phi
+        phi, e = e % phi, phi
+        x0, x1 = x1 - t * x0, x0
+    return x1 + phi0 if x1 < 0 else x1
 
 
 def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[int, int]]:
     if not (is_prime(p) and is_prime(q)):
         raise ValueError("Both numbers must be prime.")
-    elif p == q:
+    if p == q:
         raise ValueError("p and q cannot be equal")
     n = p * q
     phi = (p - 1) * (q - 1)

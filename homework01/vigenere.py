@@ -10,22 +10,23 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     'LXFOPVEFRNHR'
     """
     ciphertext = ""
-    key = (keyword * (len(plaintext) // len(keyword))) + keyword[:len(plaintext) % len(keyword)]
-    for i in range(len(plaintext)):
-           if plaintext[i].isalpha():
-                if key[i].islower():
-                     shift = ord(key[i]) - 97
-                elif key[i].isupper():
-                     shift = ord(key[i]) - 65
-                nbuk = ord(plaintext[i]) + shift
-                if plaintext[i].islower() and nbuk > ord("z"):
-                     nbuk = nbuk - 26
-                elif plaintext[i].isupper() and nbuk > ord("Z"):
-                     nbuk = nbuk - 26
-                otv = chr(nbuk)
-                ciphertext += otv
-           else:
-                ciphertext+=plaintext[i]
+    key = (keyword * (len(plaintext) // len(keyword))) + keyword[: len(plaintext) % len(keyword)]
+    for i, val in enumerate(plaintext):
+        if val.isalpha():
+            shift = 0
+            if key[i].islower():
+                shift = ord(key[i]) - 97
+            elif key[i].isupper():
+                shift = ord(key[i]) - 65
+            nbuk = ord(val) + shift
+            if val.islower() and nbuk > ord("z"):
+                nbuk = nbuk - 26
+            elif val.isupper() and nbuk > ord("Z"):
+                nbuk = nbuk - 26
+            otv = chr(nbuk)
+            ciphertext += otv
+        else:
+            ciphertext += val
 
     return ciphertext
 
@@ -42,20 +43,21 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     'ATTACKATDAWN'
     """
     plaintext = ""
-    key = (keyword * (len(ciphertext) // len(keyword))) + keyword[:len(ciphertext) % len(keyword)]
-    for i in range(len(ciphertext)):
-           if ciphertext[i].isalpha():
-                if key[i].islower():
-                     shift = ord(key[i]) - 97
-                elif key[i].isupper():
-                     shift = ord(key[i]) - 65
-                nbuk = ord(ciphertext[i]) - shift
-                if ciphertext[i].islower() and nbuk < ord("a"):
-                     nbuk = nbuk + 26
-                elif ciphertext[i].isupper() and nbuk < ord("A"):
-                     nbuk = nbuk + 26
-                otv = chr(nbuk)
-                plaintext += otv
-           else:
-                plaintext+=ciphertext[i]
+    key = (keyword * (len(ciphertext) // len(keyword))) + keyword[: len(ciphertext) % len(keyword)]
+    for i, val in enumerate(ciphertext):
+        if val.isalpha():
+            shift = 0
+            if key[i].islower():
+                shift = ord(key[i]) - 97
+            elif key[i].isupper():
+                shift = ord(key[i]) - 65
+            nbuk = ord(val) - shift
+            if val.islower() and nbuk < ord("a"):
+                nbuk = nbuk + 26
+            elif val.isupper() and nbuk < ord("A"):
+                nbuk = nbuk + 26
+            otv = chr(nbuk)
+            plaintext += otv
+        else:
+            plaintext += val
     return plaintext
