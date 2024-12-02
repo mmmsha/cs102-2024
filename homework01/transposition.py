@@ -21,4 +21,3 @@ def encrypt_transposition(plaintext: str, block_size: int, id1: int, id2: int) -
 
     encrypted_text = "".join(encrypted_blocks)
     return encrypted_text
-print(encrypt_transposition("hello", 3, 0, 1))
