@@ -53,9 +53,9 @@ def get_row(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str
     >>> get_row([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']], (2, 0))
     ['.', '8', '9']
     """
-    pos = pos[0]
+    position, _ = pos
 
-    return grid[pos]
+    return grid[position]
 
 
 def get_col(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
@@ -149,7 +149,7 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
     empty_pos = find_empty_positions(grid)
     if not empty_pos:
         return grid
-    
+
     # если пустых позиций нет то судоку уже решено
     row_empty_pos, col_empty_pos = empty_pos
     possible_values = find_possible_values(grid, (row_empty_pos, col_empty_pos))
@@ -166,18 +166,19 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     """Если решение solution верно, то вернуть True, в противном случае False"""
     # TODO: Add doctests with bad puzzles
     for row in solution:
-        if len(set(row)) != 9 or any(value == "." for value in row):
+        if len(set(row)) != 9 or any(value == "." or int(value) < 1 or int(value) > 9 for value in row):
             return False
     for col in range(9):
         col_values = [solution[row][col] for row in range(9)]
-        if len(set(col_values)) != 9 or any(value == "." for value in col_values):
+        if len(set(col_values)) != 9 or any(value == "." or int(value) < 1 or int(value) > 9 for value in col_values):
             return False
     for block_row in range(3):
         for block_col in range(3):
-            block_values = []
-            for row in range(block_row * 3, (block_row + 1) * 3):
-                for col in range(block_col * 3, (block_col + 1) * 3):
-                    block_values.append(solution[row][col])
+            block_values = [
+                solution[row][col]
+                for row in range(block_row * 3, (block_row + 1) * 3)
+                for col in range(block_col * 3, (block_col + 1) * 3)
+            ]
             if len(set(block_values)) != 9:
                 return False
     return True
