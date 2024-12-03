@@ -149,6 +149,7 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
     empty_pos = find_empty_positions(grid)
     if not empty_pos:
         return grid
+    
     # если пустых позиций нет то судоку уже решено
     row_empty_pos, col_empty_pos = empty_pos
     possible_values = find_possible_values(grid, (row_empty_pos, col_empty_pos))
