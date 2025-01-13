@@ -43,6 +43,7 @@ def show_solution():
     maze = add_path_to_grid(GRID, path)
     if path:
         draw_maze(maze, CELL_SIZE)
+        
     else:
         messagebox.showinfo("Message", "No solutions")
 
